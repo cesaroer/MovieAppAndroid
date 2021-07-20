@@ -11,25 +11,24 @@ import java.lang.Exception
 
 class MovieViewModel(private val repo: MovieRespository): ViewModel() {
 
-    fun fetchUpcomingMovies() = liveData(Dispatchers.IO) {
+    fun fetchMainScreenMovies() = liveData(Dispatchers.IO) {
 
         emit(Resource.Loading())
 
         try {
-            emit(Resource.Success(repo.getUpcomingMovies()))
+            emit(Resource.Success(Triple(repo.getUpcomingMovies(), repo.getTopRatedMovies(), repo.getPopularMovies())))
         }catch (e: Exception) {
 
             emit(Resource.Failure(e))
         }
     }
 
-    class MovieViewModelFactory(private val repo: MovieRespository) : ViewModelProvider.Factory{
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return modelClass.getConstructor(MovieRespository::class.java).newInstance(repo)
-        }
 
+}
+
+class MovieViewModelFactory(private val repo: MovieRespository) : ViewModelProvider.Factory{
+
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        return modelClass.getConstructor(MovieRespository::class.java).newInstance(repo)
     }
-
-
-
 }
