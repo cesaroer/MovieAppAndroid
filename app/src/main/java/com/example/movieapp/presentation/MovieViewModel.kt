@@ -3,15 +3,15 @@ package com.example.movieapp.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.liveData
+import androidx.lifecycle.viewModelScope
 import com.example.movieapp.core.Resource
-import com.example.movieapp.repository.MovieRespository
+import com.example.movieapp.repository.MovieRepository
 import kotlinx.coroutines.Dispatchers
-import okhttp3.Dispatcher
 import java.lang.Exception
 
-class MovieViewModel(private val repo: MovieRespository): ViewModel() {
+class MovieViewModel(private val repo: MovieRepository): ViewModel() {
 
-    fun fetchMainScreenMovies() = liveData(Dispatchers.IO) {
+    fun fetchMainScreenMovies() = liveData(viewModelScope.coroutineContext + Dispatchers.Main) {
 
         emit(Resource.Loading())
 
@@ -26,9 +26,9 @@ class MovieViewModel(private val repo: MovieRespository): ViewModel() {
 
 }
 
-class MovieViewModelFactory(private val repo: MovieRespository) : ViewModelProvider.Factory{
+class MovieViewModelFactory(private val repo: MovieRepository) : ViewModelProvider.Factory{
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return modelClass.getConstructor(MovieRespository::class.java).newInstance(repo)
+        return modelClass.getConstructor(MovieRepository::class.java).newInstance(repo)
     }
 }
