@@ -1,6 +1,7 @@
 package com.example.movieapp.data.locale
 
 import com.example.movieapp.application.AppConstants
+import com.example.movieapp.data.model.MovieEntity
 import com.example.movieapp.data.model.MovieList
 import com.example.movieapp.data.model.toMovieList
 
@@ -19,5 +20,10 @@ class LocaleMovieDataSource(private val movieDao: MovieDao) {
 
         return movieDao.getAllMovies().filter { it.movie_type == "popular" }.toMovieList()
     }
+
+    suspend fun saveMovie(movie: MovieEntity){
+        movieDao.saveMovie(movie)
+    }
+
 
 }
