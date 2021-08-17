@@ -23,10 +23,13 @@ class LocaleMovieDataSource(private val movieDao: MovieDao) {
     }
 
     suspend fun saveMovie(movie: MovieEntity){
+
         try {
+
             Log.d("MovieSaved" , "Guardando Película ${movie.title} con m_t : ${movie.movie_type}")
             movieDao.saveMovie(movie)
         }catch (e : Exception){
+
             Log.d("MovieSavedError" , "No se pudo guardar Película ${movie.title} con m_t : ${movie.movie_type}")
             return
         }
